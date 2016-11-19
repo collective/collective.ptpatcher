@@ -7,17 +7,17 @@ from zope.interface import implementer
 class HiddenProfiles(object):
 
     def getNonInstallableProfiles(self):
-        """Hide uninstall profile from site-creation and quickinstaller"""
+        '''Hide uninstall profile from site-creation and quickinstaller'''
         return [
             'collective.ptpatcher:uninstall',
         ]
 
 
 def post_install(context):
-    """Post install script"""
+    '''Post install script'''
     # Do something at the end of the installation of this package.
 
 
 def uninstall(context):
-    """Uninstall script"""
+    '''Uninstall script'''
     # Do something at the end of the uninstallation of this package.

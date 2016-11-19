@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Setup tests for this package."""
+'''Setup tests for this package.'''
 from plone import api
 from collective.ptpatcher.testing import COLLECTIVE_PTPATCHER_INTEGRATION_TESTING  # noqa
 
@@ -7,22 +7,22 @@ import unittest
 
 
 class TestSetup(unittest.TestCase):
-    """Test that collective.ptpatcher is properly installed."""
+    '''Test that collective.ptpatcher is properly installed.'''
 
     layer = COLLECTIVE_PTPATCHER_INTEGRATION_TESTING
 
     def setUp(self):
-        """Custom shared utility setup for tests."""
+        '''Custom shared utility setup for tests.'''
         self.portal = self.layer['portal']
         self.installer = api.portal.get_tool('portal_quickinstaller')
 
     def test_product_installed(self):
-        """Test if collective.ptpatcher is installed."""
+        '''Test if collective.ptpatcher is installed.'''
         self.assertTrue(self.installer.isProductInstalled(
             'collective.ptpatcher'))
 
     def test_browserlayer(self):
-        """Test that ICollectivePtpatcherLayer is registered."""
+        '''Test that ICollectivePtpatcherLayer is registered.'''
         from collective.ptpatcher.interfaces import (
             ICollectivePtpatcherLayer)
         from plone.browserlayer import utils
@@ -39,12 +39,12 @@ class TestUninstall(unittest.TestCase):
         self.installer.uninstallProducts(['collective.ptpatcher'])
 
     def test_product_uninstalled(self):
-        """Test if collective.ptpatcher is cleanly uninstalled."""
+        '''Test if collective.ptpatcher is cleanly uninstalled.'''
         self.assertFalse(self.installer.isProductInstalled(
             'collective.ptpatcher'))
 
     def test_browserlayer_removed(self):
-        """Test that ICollectivePtpatcherLayer is removed."""
+        '''Test that ICollectivePtpatcherLayer is removed.'''
         from collective.ptpatcher.interfaces import \
             ICollectivePtpatcherLayer
         from plone.browserlayer import utils
