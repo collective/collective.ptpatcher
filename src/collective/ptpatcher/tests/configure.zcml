@@ -10,4 +10,11 @@
       permission="zope.Public"
       />
 
+  <browser:view
+      name="test-patched-plone-overview"
+      for="*"
+      class=".test_patchedtemplate.PatchedOverview"
+      permission="zope.Public"
+      />
+
 </configure>
