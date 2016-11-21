@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from collective.ptpatcher.base import PatchedViewPagetTemplateFile
+from collective.ptpatcher.base import BasePatchedPTFile
 from collective.ptpatcher.testing import COLLECTIVE_PTPATCHER_INTEGRATION_TESTING  # noqa
 from pkg_resources import resource_filename
 from plone import api
@@ -8,18 +8,21 @@ from Products.Five import BrowserView
 import unittest
 
 
-def dummy_modifier(original):
+class DummyPatchedPTFile(BasePatchedPTFile):
+    ''' Dummy pathcer for testing purpose
     '''
-    '''
-    with open(original) as original:
-        return original.read().capitalize()
+    def create_target(self):
+        ''' A patcher that capitalizes text
+        '''
+        with open(self.original) as original:
+            return original.read().capitalize()
 
 
 class DummyView(BrowserView):
     ''' A view with a patched template
     '''
 
-    index = PatchedViewPagetTemplateFile(
+    index = DummyPatchedPTFile(
         original=resource_filename(
             'collective.ptpatcher',
             'tests/templates/a.pt',
@@ -28,7 +31,6 @@ class DummyView(BrowserView):
             'collective.ptpatcher',
             'tests/ptpatcher/b.pt',
         ),
-        modifier=dummy_modifier
     )
 
 
