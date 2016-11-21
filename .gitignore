@@ -2,7 +2,6 @@
 *.egg-info
 *.log
 *.mo
-*.py?
 *.swp
 # dirs
 bin/
@@ -33,3 +32,4 @@ report.html
 !.gitkeep
 !.travis.yml
 !src/collective
+*.py?
