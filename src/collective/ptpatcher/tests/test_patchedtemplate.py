@@ -25,11 +25,11 @@ class DummyView(BrowserView):
     index = DummyPatchedPTFile(
         original=resource_filename(
             'collective.ptpatcher',
-            'tests/templates/a.pt',
+            'tests/templates/hello_world.pt',
         ),
         target=resource_filename(
             'collective.ptpatcher',
-            'tests/ptpatcher/b.pt',
+            'tests/ptpatcher/hello_world.pt',
         ),
     )
 
