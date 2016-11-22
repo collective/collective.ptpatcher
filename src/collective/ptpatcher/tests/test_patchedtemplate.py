@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from collective.ptpatcher.base import BasePatchedPTFile
+from collective.ptpatcher.base import BasePatcher
 from collective.ptpatcher.testing import COLLECTIVE_PTPATCHER_INTEGRATION_TESTING  # noqa
 from lxml import etree
-from pkg_resources import resource_filename
 from plone import api
 from Products.CMFPlone.browser.admin import Overview
 from Products.Five import BrowserView
@@ -11,82 +10,73 @@ from pyquery import PyQuery as pq
 import unittest
 
 
-class DummyPatchedPTFile(BasePatchedPTFile):
+class DummyPatchedPTFile(BasePatcher):
     ''' Dummy patcher for testing purpose
     '''
-    def create_target(self):
+    def get_patched(self):
         ''' A patcher that capitalizes text
         '''
-        with open(self.original) as original:
-            return original.read().capitalize()
+        with open(self.source) as source:
+            return source.read().capitalize()
+
+
+patched_hello_world = DummyPatchedPTFile(
+    source=('collective.ptpatcher.tests', 'templates/hello_world.pt',),
+    target=('collective.ptpatcher.tests', 'ptpatcher/hello_world.pt',),
+)
 
 
 class DummyView(BrowserView):
     ''' A view with a patched template
     '''
 
-    index = DummyPatchedPTFile(
-        original=resource_filename(
-            'collective.ptpatcher',
-            'tests/templates/hello_world.pt',
-        ),
-        target=resource_filename(
-            'collective.ptpatcher',
-            'tests/ptpatcher/hello_world.pt',
-        ),
-    )
+    index = patched_hello_world.apply_patch().as_index()
 
 
-class OverviewPatchedPTFile(BasePatchedPTFile):
+class OverviewPatchedPTFile(BasePatcher):
     ''' Dummy patcher for testing purpose
     '''
-    def create_target(self):
+    def get_patched(self):
         ''' A patcher that capitalizes text
         '''
-        obj = pq(filename=self.original)
+        obj = pq(filename=self.source)
         header = obj('h1')[0]
         pq(header).after('<p>Sites created: ${python:len(sites)}</p>')
         return str(obj)
+
+
+overview_patched = OverviewPatchedPTFile(
+    source=('Products.CMFPlone.browser', 'templates/plone-overview.pt',),
+    target=('collective.ptpatcher', 'tests/ptpatcher/plone-overview.pt'),
+)
 
 
 class PatchedOverview(Overview):
     ''' Patched Plone overview
     '''
 
-    index = OverviewPatchedPTFile(
-        original=resource_filename(
-            'Products.CMFPlone.browser',
-            'templates/plone-overview.pt',
-        ),
-        target=resource_filename(
-            'collective.ptpatcher',
-            'tests/ptpatcher/plone-overview.pt',
-        ),
-    )
+    index = overview_patched.apply_patch().as_index()
 
 
-class ColophonPatchedPTFile(BasePatchedPTFile):
+class ColophonPatchedPTFile(BasePatcher):
     ''' Dummy patcher for testing purpose
     '''
-    def create_target(self):
+    def get_patched(self):
         ''' A patcher that capitalizes text
         '''
-        xml = etree.parse(self.original)
+        xml = etree.parse(self.source)
         new_xml = etree.XML('<strong>Test ptpatcher</strong>')
         xml.find('.//{http://www.w3.org/1999/xhtml}section').append(new_xml)
         return etree.tostring(xml)
 
 
 ColophonPatchedPTFile(
-    original=resource_filename(
-        'Products.CMFPlone.browser',
-        'templates/colophon.pt',
-    ),
-    target=resource_filename(
+    source=('Products.CMFPlone.browser', 'templates/colophon.pt',),
+    target=(
         'collective.ptpatcher.tests',
         'jbot/Products.CMFPlone.browser.templates.colophon.pt',
     ),
-)
+).apply_patch()
 
 
 class TestSetup(unittest.TestCase):
