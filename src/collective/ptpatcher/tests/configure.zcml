@@ -17,4 +17,8 @@
       permission="zope.Public"
       />
 
+  <include package="z3c.jbot" file="meta.zcml" />
+
+  <browser:jbot directory="jbot" />
+
 </configure>

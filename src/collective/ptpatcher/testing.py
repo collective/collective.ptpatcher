@@ -5,6 +5,7 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 
 import collective.ptpatcher.tests
+import z3c.jbot
 
 
 class CollectivePtpatcherLayer(PloneSandboxLayer):
@@ -15,6 +16,7 @@ class CollectivePtpatcherLayer(PloneSandboxLayer):
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
+        self.loadZCML(package=z3c.jbot)
         self.loadZCML(package=collective.ptpatcher.tests)
 
 

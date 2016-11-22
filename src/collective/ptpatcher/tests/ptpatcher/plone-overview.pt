@@ -12,7 +12,7 @@
 <body tal:define="sites view/sites">
 <div id="box">
     <header><h1><img src="/++resource++plone-logo.png" width="108" height="28" tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png" alt="Plone" /></h1>
-    <p>${python:len(sites)} sites created</p></header>
+    <p>Sites created: ${python:len(sites)}</p></header>
     <article>
     <div id="text">
         <div class="circle running">

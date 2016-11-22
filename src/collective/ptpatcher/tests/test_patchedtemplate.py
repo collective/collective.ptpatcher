@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from collective.ptpatcher.base import BasePatchedPTFile
 from collective.ptpatcher.testing import COLLECTIVE_PTPATCHER_INTEGRATION_TESTING  # noqa
+from lxml import etree
 from pkg_resources import resource_filename
 from plone import api
 from Products.CMFPlone.browser.admin import Overview
@@ -11,7 +12,7 @@ import unittest
 
 
 class DummyPatchedPTFile(BasePatchedPTFile):
-    ''' Dummy pathcer for testing purpose
+    ''' Dummy patcher for testing purpose
     '''
     def create_target(self):
         ''' A patcher that capitalizes text
@@ -36,15 +37,15 @@ class DummyView(BrowserView):
     )
 
 
-class DummyXMLPatchedPTFile(BasePatchedPTFile):
-    ''' Dummy pathcer for testing purpose
+class OverviewPatchedPTFile(BasePatchedPTFile):
+    ''' Dummy patcher for testing purpose
     '''
     def create_target(self):
         ''' A patcher that capitalizes text
         '''
         obj = pq(filename=self.original)
         header = obj('h1')[0]
-        pq(header).after('<p>${python:len(sites)} sites created</p>')
+        pq(header).after('<p>Sites created: ${python:len(sites)}</p>')
         return str(obj)
 
 
@@ -52,7 +53,7 @@ class PatchedOverview(Overview):
     ''' Patched Plone overview
     '''
 
-    index = DummyXMLPatchedPTFile(
+    index = OverviewPatchedPTFile(
         original=resource_filename(
             'Products.CMFPlone.browser',
             'templates/plone-overview.pt',
@@ -62,6 +63,30 @@ class PatchedOverview(Overview):
             'tests/ptpatcher/plone-overview.pt',
         ),
     )
+
+
+class ColophonPatchedPTFile(BasePatchedPTFile):
+    ''' Dummy patcher for testing purpose
+    '''
+    def create_target(self):
+        ''' A patcher that capitalizes text
+        '''
+        xml = etree.parse(self.original)
+        new_xml = etree.XML('<strong>Test ptpatcher</strong>')
+        xml.find('.//{http://www.w3.org/1999/xhtml}section').append(new_xml)
+        return etree.tostring(xml)
+
+
+ColophonPatchedPTFile(
+    original=resource_filename(
+        'Products.CMFPlone.browser',
+        'templates/colophon.pt',
+    ),
+    target=resource_filename(
+        'collective.ptpatcher.tests',
+        'jbot/Products.CMFPlone.browser.templates.colophon.pt',
+    ),
+)
 
 
 class TestSetup(unittest.TestCase):
@@ -94,6 +119,12 @@ class TestSetup(unittest.TestCase):
             self.request.clone(),
         )
         self.assertIn(
-            u'<p>1 sites created</p>',
+            u'<p>Sites created: 1</p>',
             view(),
+        )
+
+    def test_jbot_patch(self):
+        self.assertIn(
+            u'<strong>Test ptpatcher</strong>',
+            self.portal(),
         )
