@@ -38,10 +38,8 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'plone.api',
-        'Products.GenericSetup>=1.8.2',
         'setuptools',
-        'z3c.jbot',
+        'zpretty',
     ],
     extras_require={
         'test': [
