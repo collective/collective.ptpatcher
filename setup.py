@@ -14,7 +14,7 @@ long_description = '\n\n'.join([
 
 setup(
     name='collective.ptpatcher',
-    version='1.0a1',
+    version='0.0.1',
     description="Patch page templates in a sane way",
     long_description=long_description,
     # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers
