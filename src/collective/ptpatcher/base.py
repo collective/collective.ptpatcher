@@ -4,6 +4,7 @@ from pkg_resources import resource_filename
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 import os
+import six
 
 
 class BasePatcher(object):
@@ -51,5 +52,8 @@ class BasePatcher(object):
         if not os.path.exists(path):
             os.makedirs(path)
         with open(self.target, 'w') as ou:
-            ou.write(self.get_patched())
+            if six.PY2:
+                ou.write(self.get_patched())
+            else:
+                ou.write(self.get_patched().decode("utf8"))
         return self

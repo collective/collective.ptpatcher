@@ -39,6 +39,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'six',
         'zpretty',
     ],
     extras_require={
