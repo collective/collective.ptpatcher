@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.0.2 (unreleased)
+0.0.2 (2021-01-20)
 ------------------
 
 - Initial Python3 support
