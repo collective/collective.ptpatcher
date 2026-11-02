@@ -1,3 +1,9 @@
+1.0.0 (2026-11-02)
+------------------
+
+No significant changes.
+
+
 Changelog
 =========
 
@@ -5,7 +11,8 @@ Changelog
 1.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update package structure with plone.meta and rework the package form Plone 6.2+.
+  [ale-rt]
 
 
 0.0.2 (2021-01-20)
