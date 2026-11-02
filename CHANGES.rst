@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.0.3 (unreleased)
+1.0.0 (unreleased)
 ------------------
 
 - Nothing changed yet.
