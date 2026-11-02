@@ -3,6 +3,15 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     >
 
+  <include
+      package="z3c.jbot"
+      file="meta.zcml"
+      />
+
+  <browser:jbot directory="jbot" />
+
+  <include package="z3c.jbot" />
+
   <browser:view
       name="test-ptpatcher"
       for="*"
@@ -16,9 +25,5 @@
       class=".test_patchedtemplate.PatchedOverview"
       permission="zope.Public"
       />
-
-  <include package="z3c.jbot" file="meta.zcml" />
-
-  <browser:jbot directory="jbot" />
 
 </configure>

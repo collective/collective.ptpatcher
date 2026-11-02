@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-'''Init and utils.'''
+"""Init and utils."""
 
 from zope.i18nmessageid import MessageFactory
 
-_ = MessageFactory('collective.ptpatcher')
+_ = MessageFactory("collective.ptpatcher")

@@ -1,4 +1,6 @@
 graft src/collective
 graft docs
 include *.rst
+include buildout.cfg
+recursive-include news *.gitkeep
 global-exclude *.pyc
